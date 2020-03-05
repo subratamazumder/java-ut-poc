@@ -5,14 +5,14 @@ import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 
 public class JerseyRestClient {
-    public Object invoke() {
+    public Object invoke(String endpoint) {
         PersonResponse output = null;
         try {
 
             Client client = Client.create();
 
             WebResource webResource = client
-                    .resource("http://localhost:8080/wiremock/rest/json/post");
+                    .resource(endpoint);
 
             ClientResponse response = webResource.type("application/json")
                     .post(ClientResponse.class, new PersonRequest("Subrata", 35));
@@ -23,8 +23,9 @@ public class JerseyRestClient {
             }
 
             System.out.println("Output from Server .... \n");
-            System.out.println(response.getEntity(PersonResponse.class).getName());
 
+            output = response.getEntity(PersonResponse.class);
+            System.out.println(output.getName());
 
         } catch (Exception e) {
 
